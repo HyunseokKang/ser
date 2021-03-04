@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1"/>
+        <title>직역검색</title>
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+        <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+        <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=61c5420e747e8c27a07998090360dfa5"></script>
+        <style>
+            #list img{width: 150px; height: 70;}
+            #list{margin-top: 10px;}
+            #list li{padding-left: 10px;}
+            #contents{padding:5px; border:2px solid black;}
+        </style>
+    </head>
+    </head>
+    <body>
+        <!--지역목록-->
+        <div data-role="page" id="main">
+            <div data-role="header" data-theme="b" data-position="fixed">
+                <a href="index.html" target="_self" data-icon="home" data-iconpos="notext">home</a>
+                <h2>지역검색</h2>
+            </div>
+            <div data-role="content">
+                <input type="text" id="txtQuery" value="인천일보"/>
+                <ul data-role="listview" id="list"></ul>
+                <script id="temp" type="text/x-handlebars-template">
+                    {{#each documents}}
+                        <li>
+                            <a href="#sub" address="{{address_name}}" 
+                            phone="{{phone}}" x="{{x}}" y="{{y}}">{{{place_name}}}</a>
+                        </li>
+                    {{/each}}
+                </script>
+                <input type="button" value="More" id="btnMore"/>
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <h2>인천일보 아카데미</h2>
+            </div> 
+        </div>
+         <!--지역정보 페이지-->
+         <div data-role="page" id="sub">
+            <div data-role="header" data-theme="b" data-position="fixed">
+                <a href="index.html" target="_self" data-icon="home" data-iconpos="notext">home</a>
+                <h2>지역정보</h2>
+                <a href="#main" data-icon="back" data-iconpos="notext">Back</a>
+            </div>
+            <div data-role="content" style="border:3px dotted blue;">
+                <div>
+                    <h4 id="address"></h4>
+                    <h5 id="phone"></h5>
+                    <div id="map" style="width:400px;height:300px;"></div>
+                </div>
+            </div>
+            <div data-role="footer" data-theme="b" data-position="fixed">
+                <h2>인천일보 아카데미</h2>
+            </div> 
+        </div>
+    </body>
+    <script>
+        var url="https://dapi.kakao.com/v2/local/search/keyword.json"
+        $("#list").on("click","a", function(){
+            var address=$(this).attr("address");
+            var phone=$(this).attr("phone");
+            $("#address").html("주소: " + address);
+            $("#phone").html("전화번호: " + phone);
+            var x=$(this).html("x");
+            var y=$(this).html("y");
+            var container = document.getElementById('map');
+		    var options = {
+			    center: new kakao.maps.LatLng(y, x),
+			    level: 3
+		    };
+		    var map = new kakao.maps.Map(container, options);
+            //var marker=new kakao.maps.Marker({position:new kakao.maps.LatLng(y, x)});
+            marker.setMap(map); 
+            get(map);
+        });
+        function grtMap(map){
+            map.relayout();
+        }
+        map.setCenter(map);
+    </script>
+    <script src="script.js"></script>
+</html>
